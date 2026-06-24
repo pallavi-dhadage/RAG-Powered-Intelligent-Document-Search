@@ -1,0 +1,99 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+*.egg
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Backend
+backend/venv/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/chroma_db/
+backend/chroma_db_backup/
+backend/uploads/
+backend/*.db
+backend/*.sqlite3
+backend/.env
+backend/.env.local
+backend/.env.*.local
+
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/.cache/
+frontend/package-lock.json
+frontend/yarn.lock
+frontend/*.log
+
+# Docker
+*.pid
+docker-compose.override.yml
+.docker/
+docker-compose.*.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+postgres_data/
+redis_data/
+
+# Testing
+test.txt
+doc*.txt
+*.txt
+!README.md
+!requirements.txt
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Uploads
+backend/uploads/*.pdf
+backend/uploads/*.docx
+backend/uploads/*.doc
+backend/uploads/*.txt
+
+# ChromaDB
+backend/chroma_db/
+backend/chroma_db_backup/
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp

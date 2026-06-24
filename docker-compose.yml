@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: rag-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: rag_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rag_network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: rag-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - rag_network
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: rag-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/rag_db
+      - REDIS_URL=redis://redis:6379
+      - CHROMA_PERSIST_DIR=/app/chroma_db
+      - EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+      - CHUNK_SIZE=500
+      - CHUNK_OVERLAP=50
+      - MAX_FILE_SIZE=10485760
+      - DEBUG=True
+      - SECRET_KEY=your-secret-key-here
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:8000
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/chroma_db:/app/chroma_db
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - rag_network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: rag-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - rag_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  rag_network:
+    driver: bridge
