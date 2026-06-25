@@ -16,7 +16,7 @@ class Document(Base):
     file_size = Column(Integer, nullable=False)
     title = Column(String(255))
     description = Column(Text)
-    extra_metadata = Column(JSON)  # Changed from 'metadata' to 'extra_metadata'
+    extra_metadata = Column(JSON)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -27,7 +27,7 @@ class DocumentChunk(Base):
     document_id = Column(Integer, nullable=False)
     chunk_index = Column(Integer, nullable=False)
     content = Column(Text, nullable=False)
-    extra_metadata = Column(JSON)  # Changed from 'metadata' to 'extra_metadata'
+    extra_metadata = Column(JSON)
 
 # Pydantic models for API
 class DocumentCreate(BaseModel):
@@ -55,9 +55,8 @@ class SearchQuery(BaseModel):
     top_k: int = 5
 
 class SearchResult(BaseModel):
-    chunk_id: int
-    document_id: int
-    filename: str
     content: str
     score: float
-    extra_metadata: Optional[dict]
+    document_id: int
+    chunk_id: int
+    extra_metadata: Optional[dict] = None

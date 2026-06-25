@@ -6,7 +6,7 @@ import logging
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-@router.post("/", response_model=list[SearchResult])
+@router.post("/")
 async def search_documents(search_query: SearchQuery):
     """Search for documents using RAG."""
     try:
@@ -15,15 +15,15 @@ async def search_documents(search_query: SearchQuery):
             top_k=search_query.top_k
         )
         
-        # Format results
+        # Format results to match the response model
         formatted_results = []
         for result in results:
             formatted_results.append({
                 'content': result['content'],
                 'score': result['score'],
-                'metadata': result['metadata'],
                 'document_id': result['metadata']['document_id'],
-                'chunk_id': result['metadata']['chunk_index']
+                'chunk_id': result['metadata']['chunk_index'],
+                'extra_metadata': result['metadata']
             })
         
         logger.info(f"Search completed for query: {search_query.query[:50]}...")
